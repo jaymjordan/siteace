@@ -1,0 +1,248 @@
+<head>
+    <title>Cocktail Ace</title>
+</head>
+
+<body>
+
+</body>
+
+<!--  Start of Templates -->
+
+<template name="ApplicationLayout">
+	{{> yield "navbar"}}
+	{{> yield "main"}}
+</template>
+
+<!-- Navbar Template -->
+<template name="navbar">
+	<nav class="navbar navbar-default">
+	    <div class="container-fluid">
+	        <div class="navbar-header">
+	            <!--<a class="navbar-brand" href="/">
+	                Cocktail Ace
+	            </a>-->
+	        <div class="navbar-header">
+          		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            		<span class="sr-only">Toggle navigation</span>
+            		<span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+          		</button>
+          		<a class="navbar-brand" href="/">Cocktail Ace</a>
+        	</div>
+        	<div id="navbar" class="collapse navbar-collapse">
+        		<ul class="nav navbar-nav">
+		            <li><a href="/">Home</a></li>
+		            <li><a href="/sites">Websites</a></li>
+		            <li><a href="/search">Search</a></li>
+		         </ul>
+        		<div id="login">
+        			{{> loginButtons}}
+        		</div>
+        	</div><!--/.nav-collapse -->
+      	</div>
+      	</div>
+      	</nav>
+</template> <!-- /Navbar -->
+
+<!-- Home Page Template -->
+
+<template name="home">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Cocktail Ace</h1>
+            <a class="btn btn-default btn-lg" href="/sites">The Best Cocktails on the Web</a>
+        </div>
+    </div>
+    <div class="container">
+        <h3 id="heading">Highest Ranking Cocktail Sites</h3>
+        <div class="row">
+            {{#each topRated}}
+                {{>topRated_item}}
+            {{/each}}
+        </div>
+    </div>
+</template> <!-- / Home Page -->
+
+
+
+<template name="sites">
+    <div class="container" id="list">
+        {{#unless currentUser}}
+            <h3 class="heading">Sign in or Log in to be able to submit, rate and discuss websites.</h3>
+        {{/unless}}
+        {{> listBreadcrumbs}}
+        {{> website_form}}
+        {{> website_list}}
+    </div>
+</template>
+
+<template name="website_form">
+    {{#if currentUser}}
+        <a class="btn btn-default js-toggle-website-form" href="#">
+            Add new site
+        </a>
+    {{/if}}
+    <div id="website_form" class="hidden_div">
+        <form class="js-save-website-form">
+            <div class="form-group">
+                <label for="url">Site address</label>
+                <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Mysite">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description"
+                       placeholder="I found this site really useful for ...">
+            </div>
+            <div class="alert alert-danger"></div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+    <div class="list-group">
+    	
+    	{{> listMessage}}
+        {{#each websites}}
+
+            {{>website_item}}
+
+        {{/each}}
+    </div>
+</template>
+
+<template name="listBreadcrumbs">
+	<div id="brcrumbs" class="paddingTop">
+		<ol class="breadcrumb">
+  			<li><a href="/">Home</a></li>
+  			<li class="active">Search</li>
+		</ol>
+	</div>
+</template> 
+
+<template name="listMessage">
+	<div class="page-header">
+		<h1> Website List</h1> 
+	</div>
+</template>
+
+<!-- template for top rated items -->
+<template name="topRated_item">
+    <div class="col-xs-6 col-md-4">
+        <div class="thumbnail" id="padded">
+            <a href="{{url}}">
+                <p class="title">{{title}}</p>
+            </a>
+            <p>
+                {{{description}}}
+            </p>
+            <p class="upvotes"><span class="glyphicon glyphicon-glass"
+                                     aria-hidden="true"></span>{{#if upvotes}} {{upvotes}} {{else}} 0 {{/if}}</p>
+        </div>
+    </div>
+</template>
+<!-- template that displays individual website entries -->
+<template name="website_item">
+    <a href="/sites/{{_id}}" class="list-group-item">
+        <a href="{{url}}">
+            <p class="title list-group-item-heading">{{title}}</p>
+        </a>
+        <p>{{description}}</p>
+
+        <p class="upvotes"><span class="glyphicon glyphicon-glass"
+                                 aria-hidden="true"></span>{{#if upvotes}} {{upvotes}} {{else}} 0 {{/if}}</p>
+
+        {{#if currentUser}}
+            <a href="#" class="btn btn-default btn-sm js-upvote">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+
+            <a href="#" class="btn btn-default btn-sm js-downvote">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </a>
+        {{/if}}
+        <p>Added on {{formatDate createdOn}}</p>
+    </a>
+</template>
+
+<template name="site">
+    <div class="container">
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <p class="upvotes"><span class="glyphicon glyphicon-glass"
+                                 aria-hidden="true"></span>{{#if upvotes}} {{upvotes}} {{else}} 0 {{/if}}</p>
+
+        <div class="comments">
+            <h3>Comments</h3>
+            {{#if comments}}
+                <ul class="list-group">
+                    {{#each comments}}
+                        <li class="list-group-item">
+                            <p id="date">{{this.date}}</p>
+                            <p id="user">{{this.user}}</p>
+                            <p id="comment-text">{{this.text}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p>No comments yet...</p>
+            {{/if}}
+        </div>
+        <div class="input-group">
+            <textarea class="form-control" rows="3" id='comment' placeholder="Leave a comment..."></textarea>
+            <span class="input-group-addon btn btn-primary js-add-comment">Submit</span>
+        </div>
+
+
+    </div>
+</template>
+
+<!-- template for search -->
+
+<template name="searchPage">
+	<div class="container">
+		{{> searchBreadcrumbs}}
+		{{> searchMessage}}
+		{{#if currentUser}}
+			{{> searchBody}}
+		{{else}}
+			<div class="paddingLeft paddingRight">
+				<div class="alert alert-info" role="alert">Please sign in to see more!</div>
+			</div>
+		{{/if}}
+	</div>
+</template>
+
+
+<template name="searchBreadcrumbs">
+	<div id="brcrumbIV" class="paddingTop">
+		<ol class="breadcrumb">
+  			<li><a href="/">Home</a></li>
+  			<li class="active">Search</li>
+		</ol>
+	</div>
+</template> 
+
+<template name="searchMessage">
+	<div class="page-header">
+		<h1> Search </h1> 
+	</div>
+</template>
+
+<template name="searchBody">
+	<div class="paddingLeft paddingRight">
+		<p> Search: {{> EasySearch.Input index=websitesIndex }} </p>
+	    <ul class="list-group">
+	        {{#EasySearch.Each index=websitesIndex }}
+	           <li class="list-group-item webLinks js-next searchLinks" id="{{_id}}">{{title}} <br/></li>
+	        {{/EasySearch.Each}}
+	    </ul>
+	</div>
+
+</template> <!-- / search -->
