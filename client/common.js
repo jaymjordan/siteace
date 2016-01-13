@@ -1,7 +1,4 @@
-
-
-
-
+Meteor.subscribe("websites");
 
 // Add username field to sign up form
 Accounts.ui.config({
@@ -10,10 +7,6 @@ Accounts.ui.config({
 
 
 /* template helpers*/
-
-
-
-
 // helper function that returns all available websites
 Template.website_list.helpers({
     websites: function () {
@@ -33,7 +26,7 @@ Template.registerHelper('formatDate', function (date) {
 /////
 // template events
 /////
-
+// upvote & downvote a website
 Template.website_item.events({
     "click .js-upvote": function (event) {
 
@@ -73,6 +66,7 @@ Template.website_item.events({
         event.stopPropagation();
     }
 });
+
 
 Template.website_form.events({
     "click .js-toggle-website-form": function (event) {
