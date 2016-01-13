@@ -1,0 +1,11 @@
+<template name="website_list">
+    <div class="list-group">
+    	
+    	{{> listMessage}}
+        {{#each websites}}
+
+            {{>website_item}}
+
+        {{/each}}
+    </div>
+</template>

@@ -1,0 +1,15 @@
+<!-- template for top rated items -->
+<template name="topRated_item">
+    <div class="col-xs-6 col-md-4">
+        <div class="thumbnail" id="padded">
+            <a href="{{url}}">
+                <p class="title">{{title}}</p>
+            </a>
+            <p>
+                {{{description}}}
+            </p>
+            <p class="upvotes"><span class="glyphicon glyphicon-glass"
+                                     aria-hidden="true"></span>{{#if upvotes}} {{upvotes}} {{else}} 0 {{/if}}</p>
+        </div>
+    </div>
+</template>

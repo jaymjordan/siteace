@@ -1,0 +1,31 @@
+<template name="site">
+    <div class="container">
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <p class="upvotes"><span class="glyphicon glyphicon-glass"
+                                 aria-hidden="true"></span>{{#if upvotes}} {{upvotes}} {{else}} 0 {{/if}}</p>
+
+        <div class="comments">
+            <h3>Comments</h3>
+            {{#if comments}}
+                <ul class="list-group">
+                    {{#each comments}}
+                        <li class="list-group-item">
+                            <p id="date">{{this.date}}</p>
+                            <p id="user">{{this.user}}</p>
+                            <p id="comment-text">{{this.text}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <p>No comments yet...</p>
+            {{/if}}
+        </div>
+        <div class="input-group">
+            <textarea class="form-control" rows="3" id='comment' placeholder="Leave a comment..."></textarea>
+            <span class="input-group-addon btn btn-primary js-add-comment">Submit</span>
+        </div>
+
+
+    </div>
+</template>

@@ -1,0 +1,58 @@
+<!-- Home Page Template -->
+
+<template name="home">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Cocktail Ace</h1>
+            <a class="btn btn-default btn-lg" href="/sites">The Best Cocktails on the Web</a>
+        </div>
+    </div>
+    <div class="container">
+        <h3 id="heading">Highest Ranking Cocktail Sites</h3>
+        <div class="row">
+            {{#each topRated}}
+                {{>topRated_item}}
+            {{/each}}
+        </div>
+    </div>
+</template> <!-- / Home Page -->
+
+
+
+<template name="sites">
+    <div class="container" id="list">
+        {{#unless currentUser}}
+            <h3 class="heading">Sign in or Log in to be able to submit, rate and discuss websites.</h3>
+        {{/unless}}
+        {{> listBreadcrumbs}}
+        {{> website_form}}
+        {{> website_list}}
+    </div>
+</template>
+
+<template name="website_form">
+    {{#if currentUser}}
+        <a class="btn btn-default js-toggle-website-form" href="#">
+            Add new site
+        </a>
+    {{/if}}
+    <div id="website_form" class="hidden_div">
+        <form class="js-save-website-form">
+            <div class="form-group">
+                <label for="url">Site address</label>
+                <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Mysite">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description"
+                       placeholder="I found this site really useful for ...">
+            </div>
+            <div class="alert alert-danger"></div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</template>

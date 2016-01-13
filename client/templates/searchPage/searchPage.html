@@ -1,0 +1,43 @@
+<!-- template for search -->
+
+<template name="searchPage">
+	<div class="container">
+		{{> searchBreadcrumbs}}
+		{{> searchMessage}}
+		{{#if currentUser}}
+			{{> searchBody}}
+		{{else}}
+			<div class="paddingLeft paddingRight">
+				<div class="alert alert-info" role="alert">Please sign in to see more!</div>
+			</div>
+		{{/if}}
+	</div>
+</template>
+
+
+<template name="searchBreadcrumbs">
+	<div id="brcrumbIV" class="paddingTop">
+		<ol class="breadcrumb">
+  			<li><a href="/">Home</a></li>
+  			<li class="active">Search</li>
+		</ol>
+	</div>
+</template> 
+
+<template name="searchMessage">
+	<div class="page-header">
+		<h1> Search </h1> 
+	</div>
+</template>
+
+<template name="searchBody">
+	<div class="paddingLeft paddingRight">
+		<p> Search: {{> EasySearch.Input index=websitesIndex }} </p>
+	    <ul class="list-group">
+	        {{#EasySearch.Each index=websitesIndex }}
+	           <li class="list-group-item webLinks js-next searchLinks" id="{{_id}}">{{title}} <br/></li>
+	        {{/EasySearch.Each}}
+	    </ul>
+	</div>
+
+</template> <!-- / search -->
